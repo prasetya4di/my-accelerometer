@@ -33,12 +33,38 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
     @Override
-    public void onSensorChanged(SensorEvent sensorEvent) {
+    public void onSensorChanged(SensorEvent event) {
+        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+            // assign directions
+            float x = event.values[0];
+            float y = event.values[1];
+            float z = event.values[2];
 
+            txtAxisX.setText(getString(R.string.txt_axis_x, x));
+            txtAxisY.setText(getString(R.string.txt_axis_y, y));
+            txtAxisZ.setText(getString(R.string.txt_axis_z, z));
+            Pointing currentPoint = Pointing.parse(x, y);
+            if (currentPoint != null) {
+                imgIllustration.setImageResource(getImageId(currentPoint));
+            }
+        }
     }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
 
+    }
+
+    private int getImageId(Pointing pointing) {
+        switch (pointing) {
+            case DOWN:
+                return R.drawable.ic_arrow_down;
+            case LEFT:
+                return R.drawable.ic_arrow_left;
+            case RIGHT:
+                return R.drawable.ic_arrow_right;
+            default:
+                return R.drawable.ic_arrow_up;
+        }
     }
 }
