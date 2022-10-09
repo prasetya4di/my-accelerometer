@@ -5,17 +5,23 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
-    private SensorManager sensorManager;
-    private TextView txtAxisX, txtAxisY, txtAxisZ;
+    private final List<Pointing> listNavigation = new ArrayList<>();
+    private TextView txtAxisX;
+    private TextView txtAxisY;
     private ImageView imgIllustration;
-    private ListView lvNavigation;
+    private TextView txtAxisZ;
+    private ArrayAdapter<Pointing> navigationAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,10 +32,22 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         txtAxisY = findViewById(R.id.txtAxisY);
         txtAxisZ = findViewById(R.id.txtAxisZ);
         imgIllustration = findViewById(R.id.imgIllustration);
-        lvNavigation = findViewById(R.id.listNavigation);
+        ListView lvNavigation = findViewById(R.id.listNavigation);
 
-        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
+        SensorManager sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        sensorManager.registerListener(
+                this,
+                sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                SensorManager.SENSOR_DELAY_NORMAL
+        );
+
+        navigationAdapter = new ArrayAdapter<>(
+                this,
+                R.layout.list_navigation,
+                R.id.txtNavigation,
+                listNavigation
+        );
+        lvNavigation.setAdapter(navigationAdapter);
     }
 
     @Override
@@ -46,7 +64,15 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             Pointing currentPoint = Pointing.parse(x, y);
             if (currentPoint != null) {
                 imgIllustration.setImageResource(getImageId(currentPoint));
+                addNavigationResult(currentPoint);
             }
+        }
+    }
+
+    private void addNavigationResult(Pointing currentPoint) {
+        if (listNavigation.isEmpty() || currentPoint != listNavigation.get(listNavigation.size() - 1)) {
+            listNavigation.add(currentPoint);
+            navigationAdapter.notifyDataSetChanged();
         }
     }
 
