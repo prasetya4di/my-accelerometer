@@ -7,8 +7,8 @@
     <string name="txt_navigation_left">Kiri</string>
     <string name="txt_navigation_right">Kanan</string>
     <string name="txt_axis">Sumbu</string>
-    <string name="txt_axis_x">X: %1$d</string>
-    <string name="txt_axis_y">Y: %1$d</string>
-    <string name="txt_axis_z">Z: %1$d</string>
+    <string name="txt_axis_x">X: %1$f</string>
+    <string name="txt_axis_y">Y: %1$f</string>
+    <string name="txt_axis_z">Z: %1$f</string>
     <string name="txt_illustration">Ilustrasi</string>
 </resources>
