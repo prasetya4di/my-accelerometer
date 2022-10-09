@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">MyAccelerometer</string>
 
-    <string name="txt_navigation">Navigasi</string>
+    <string name="txt_navigation">Riwayat Navigasi</string>
     <string name="txt_navigation_up">Atas</string>
     <string name="txt_navigation_down">Bawah</string>
     <string name="txt_navigation_left">Kiri</string>
